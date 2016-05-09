@@ -23,6 +23,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 
 public class MapBodyBuilder {
+	final static float PIXELS_TO_METERS = 100f;
 
     // The pixels per tile. If your tiles are 16x16, this is set to 16f
     private static float ppt = 0;
@@ -35,7 +36,7 @@ public class MapBodyBuilder {
         Array<Body> bodies = new Array<Body>();
 
         for(MapObject object : objects) {
-
+        	
             if (object instanceof TextureMapObject) {
                 continue;
             }
@@ -60,6 +61,7 @@ public class MapBodyBuilder {
 
             BodyDef bd = new BodyDef();
             bd.type = BodyType.StaticBody;
+            
             Body body = world.createBody(bd);
             body.createFixture(shape, 1);
 
@@ -73,20 +75,22 @@ public class MapBodyBuilder {
     private static PolygonShape getRectangle(RectangleMapObject rectangleObject) {
         Rectangle rectangle = rectangleObject.getRectangle();
         PolygonShape polygon = new PolygonShape();
-        Vector2 size = new Vector2((rectangle.x + rectangle.width * 0.5f) / ppt,
-                                   (rectangle.y + rectangle.height * 0.5f ) / ppt);
-        polygon.setAsBox(rectangle.width * 0.5f / ppt,
-                         rectangle.height * 0.5f / ppt,
+        Vector2 size = new Vector2((rectangle.x + rectangle.width * 0.5f) / PIXELS_TO_METERS,
+                                   (rectangle.y + rectangle.height * 0.5f ) / PIXELS_TO_METERS);
+        polygon.setAsBox(rectangle.width * 0.5f / PIXELS_TO_METERS,
+                         rectangle.height * 0.5f / PIXELS_TO_METERS,
                          size,
                          0.0f);
         return polygon;
     }
 
     private static CircleShape getCircle(CircleMapObject circleObject) {
+    	//bodyDef.position.set((character1.getX() - character1.getWidth()/2) / PIXELS_TO_METERS, 
+		//		(character1.getY() - character1.getHeight()/2) / PIXELS_TO_METERS);
         Circle circle = circleObject.getCircle();
         CircleShape circleShape = new CircleShape();
-        circleShape.setRadius(circle.radius / ppt);
-        circleShape.setPosition(new Vector2(circle.x / ppt, circle.y / ppt));
+        circleShape.setRadius(circle.radius / PIXELS_TO_METERS);
+        circleShape.setPosition(new Vector2(circle.x / PIXELS_TO_METERS, circle.y / PIXELS_TO_METERS));
         return circleShape;
     }
 
@@ -98,7 +102,7 @@ public class MapBodyBuilder {
 
         for (int i = 0; i < vertices.length; ++i) {
             System.out.println(vertices[i]);
-            worldVertices[i] = vertices[i] / ppt;
+            worldVertices[i] = vertices[i] / PIXELS_TO_METERS;
         }
 
         polygon.set(worldVertices);
@@ -111,8 +115,8 @@ public class MapBodyBuilder {
 
         for (int i = 0; i < vertices.length / 2; ++i) {
             worldVertices[i] = new Vector2();
-            worldVertices[i].x = vertices[i * 2] / ppt;
-            worldVertices[i].y = vertices[i * 2 + 1] / ppt;
+            worldVertices[i].x = vertices[i * 2] / PIXELS_TO_METERS;
+            worldVertices[i].y = vertices[i * 2 + 1] / PIXELS_TO_METERS;
         }
 
         ChainShape chain = new ChainShape(); 

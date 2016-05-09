@@ -146,7 +146,7 @@ public class pullStop extends ApplicationAdapter implements InputProcessor{
 		float w = Gdx.graphics.getWidth();
 		float h = Gdx.graphics.getHeight();
 
-		character1 = new Character(Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight()/2, new Texture(Gdx.files.internal("pika.png")));
+		character1 = new Character(Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight(), new Texture(Gdx.files.internal("pika.png")));
 		character1.setTouchable(Touchable.enabled);
 
 		System.out.println(w + h);
@@ -156,9 +156,13 @@ public class pullStop extends ApplicationAdapter implements InputProcessor{
 		BodyDef bodyDef = new BodyDef();
 		bodyDef.type = BodyDef.BodyType.DynamicBody;
 
-		bodyDef.position.set((character1.getX() - character1.getWidth()/2) / PIXELS_TO_METERS, 
-				(character1.getY() - character1.getHeight()/2) / PIXELS_TO_METERS);
-
+		/*bodyDef.position.set((character1.getX() - character1.getWidth()/2) / PIXELS_TO_METERS, 
+				(character1.getY() - character1.getHeight()/2) / PIXELS_TO_METERS);*/
+		bodyDef.position.set((0 + character1.getWidth()/2) / PIXELS_TO_METERS, 
+				(stage.getHeight() - character1.getHeight()/2) / PIXELS_TO_METERS);
+		
+		System.out.println("Stage height : " + stage.getHeight() + " character Y : " + character1.getY() + " bodyDef Y : " + (bodyDef.position.y * PIXELS_TO_METERS));
+		
 		body = world.createBody(bodyDef);
 
 		PolygonShape shape = new PolygonShape();
@@ -210,7 +214,8 @@ public class pullStop extends ApplicationAdapter implements InputProcessor{
 		body.applyTorque(torque,true);
 		
 		character1.setPosition((body.getPosition().x * PIXELS_TO_METERS) - character1.getWidth()/2, (body.getPosition().y * PIXELS_TO_METERS) - character1.getHeight()/2);
-		
+		System.out.println("Stage height : " + stage.getHeight() + " character Y : " + character1.getY() + " body Y : " + (body.getPosition().y * PIXELS_TO_METERS));
+
 		character1.setRotation((float)Math.toDegrees(body.getAngle()));
 		
 		Gdx.gl.glClearColor(1, 0, 0, 1);
@@ -223,9 +228,6 @@ public class pullStop extends ApplicationAdapter implements InputProcessor{
 		debugMatrix = camera.combined.cpy().scale(PIXELS_TO_METERS, 
                 PIXELS_TO_METERS, 0);
 		
-		/*sb.begin();
-        sprite.draw(sb);
-        sb.end();*/
 		stage.act(Gdx.graphics.getDeltaTime());
 		stage.draw();
 		
@@ -242,10 +244,10 @@ public class pullStop extends ApplicationAdapter implements InputProcessor{
 	public boolean keyDown(int keycode) {
 		if(keycode == Input.Keys.LEFT){
 			System.out.println("Left");
-			body.setLinearVelocity(-1f,0f);
+			body.setLinearVelocity(-character1.getSpeed(),0f);
 		}
 		if(keycode == Input.Keys.RIGHT)
-			body.setLinearVelocity(1f,0f);
+			body.setLinearVelocity(character1.getSpeed(),0f);
 		if(keycode == Input.Keys.UP)
 			body.applyForceToCenter(0f,10f,true);
 		if(keycode == Input.Keys.DOWN)

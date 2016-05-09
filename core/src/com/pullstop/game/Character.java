@@ -5,8 +5,8 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
 public class Character extends Actor{
-	Texture texture;
-	public boolean started = false;
+	private Texture texture;
+	private float _speed = 1.f;
 
 	public Character(float posX, float posY, Texture texture) {
 		this.setPosition(posX, posY);
@@ -20,6 +20,10 @@ public class Character extends Actor{
 		batch.draw(texture, this.getX(), getY(), this.getOriginX(), this.getOriginY(), this.getWidth(),
 				this.getHeight(), this.getScaleX(), this.getScaleY(), this.getRotation(), 0, 0, texture.getWidth(),
 				texture.getHeight(), false, false);
+	}
+
+	public float getSpeed() {
+		return _speed;
 	}
 
 	/*
