@@ -12,7 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 
 public class Character extends Actor{
 	final static float PIXELS_TO_METERS = 100f;
-	
+
 	public enum MoveState {
 		LEFT,
 		RIGHT,
@@ -47,7 +47,7 @@ public class Character extends Actor{
 		fixtureDef.shape = shape;
 		fixtureDef.density = 0.1f;
 		fixtureDef.restitution = 0f;
-		//fixtureDef.friction = 0f;
+		fixtureDef.friction = 0f;
 		
 		body.createFixture(fixtureDef);
 		body.setFixedRotation(true);
