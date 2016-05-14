@@ -29,7 +29,6 @@
   <object gid="115" x="192" y="1728"/>
  </objectgroup>
  <objectgroup name="Balls">
-  <object gid="116" x="829" y="1346"/>
   <object gid="116" x="899" y="1272"/>
   <object gid="116" x="392" y="1472"/>
   <object gid="116" x="619" y="1470"/>

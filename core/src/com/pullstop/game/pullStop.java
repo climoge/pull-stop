@@ -150,7 +150,8 @@ public class pullStop extends ApplicationAdapter implements InputProcessor {
 				if (actor.getClass() == Projectile.class) {
 					if (((Projectile) actor).body.getType() == BodyType.StaticBody) {
 						((Projectile) actor).body.setType(BodyType.DynamicBody);
-						((Projectile) actor).body.setLinearVelocity(((Projectile) actor).getAngularVelocity());
+						((Projectile) actor).body.setLinearVelocity(((Projectile) actor).getVelocity());
+						((Projectile) actor).body.setAngularVelocity(((Projectile) actor).getAngularVelocity());
 					}
 				}
 			}
@@ -161,7 +162,7 @@ public class pullStop extends ApplicationAdapter implements InputProcessor {
 				if (actor.getClass() == Projectile.class) {
 					if (((Projectile) actor).body.getType() == BodyType.DynamicBody) {
 						((Projectile) actor).setVelocity(((Projectile) actor).body.getLinearVelocity());
-						((Projectile) actor).setAngularVelocity(((Projectile) actor).body.getLinearVelocity());
+						((Projectile) actor).setAngularVelocity(((Projectile) actor).body.getAngularVelocity());
 						((Projectile) actor).body.setType(BodyType.StaticBody);	
 					}
 				}
@@ -170,15 +171,23 @@ public class pullStop extends ApplicationAdapter implements InputProcessor {
 		}
 
 		if (keycode == Input.Keys.SPACE) {
+			for (Actor actor : stage.getActors()) {
+				if (actor.getClass() == Projectile.class) {
+					if (((Projectile) actor).body.getType() == BodyType.DynamicBody) {
+						float directionVector = ((Character)stage.getActors().first()).body.getPosition().sub(((Projectile) actor).body.getPosition()).angle();
+						((Projectile) actor).body.applyForceToCenter(new Vector2(10f,0).rotate(directionVector), true);;
+					}
+				}
+			}
+		}
+
+		if (keycode == Input.Keys.ESCAPE){
 			((Character) stage.getActors().first()).body.setLinearVelocity(0f, 0f);
 			((Character) stage.getActors().first()).body.setAngularVelocity(0f);
 			torque = 0f;
 			((Character) stage.getActors().first()).setPosition(0f, 500f);
 			((Character) stage.getActors().first()).body.setTransform(0f, 5f, 0f);
 		}
-
-		if (keycode == Input.Keys.ESCAPE)
-			drawSprite = !drawSprite;
 
 		return true;
 	}

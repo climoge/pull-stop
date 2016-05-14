@@ -20,7 +20,6 @@ public class Character extends Actor{
 	}
 	
 	private Texture texture;
-	private final float _speed = 3.f;
 	public Body body;
 	private MoveState moveState = MoveState.STOP;
 
@@ -41,8 +40,11 @@ public class Character extends Actor{
 		body = world.createBody(bodyDef);
 
 		PolygonShape shape = new PolygonShape();
-
 		shape.setAsBox(texture.getWidth()/2 / PIXELS_TO_METERS, texture.getHeight()/2 / PIXELS_TO_METERS);
+		/*CircleShape shape = new CircleShape();
+
+		shape.setRadius((texture.getWidth() / 2) / PIXELS_TO_METERS);*/
+		
 		FixtureDef fixtureDef = new FixtureDef();
 		fixtureDef.shape = shape;
 		fixtureDef.density = 0.1f;
@@ -77,10 +79,6 @@ public class Character extends Actor{
 		batch.draw(texture, this.getX(), getY(), this.getOriginX(), this.getOriginY(), this.getWidth(),
 				this.getHeight(), this.getScaleX(), this.getScaleY(), this.getRotation(), 0, 0, texture.getWidth(),
 				texture.getHeight(), false, false);
-	}
-
-	public float getSpeed() {
-		return _speed;
 	}
 
 	public MoveState getMoveState() {

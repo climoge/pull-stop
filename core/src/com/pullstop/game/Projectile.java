@@ -15,7 +15,7 @@ public class Projectile extends Actor {
 
 	private Texture texture;
 	private Vector2 velocity;
-	private Vector2 angularVelocity;
+	private float angularVelocity;
 
 	public Body body;
 
@@ -36,8 +36,8 @@ public class Projectile extends Actor {
 		body = world.createBody(bodyDef);
 
 		CircleShape shape = new CircleShape();
-
 		shape.setRadius((texture.getWidth() / 2) / PIXELS_TO_METERS);
+		
 		FixtureDef fixtureDef = new FixtureDef();
 		fixtureDef.shape = shape;
 		fixtureDef.density = 0.1f;
@@ -70,11 +70,11 @@ public class Projectile extends Actor {
 		return velocity;
 	}
 
-	public Vector2 getAngularVelocity() {
+	public float getAngularVelocity() {
 		return angularVelocity;
 	}
 
-	public void setAngularVelocity(Vector2 angularVelocity) {
+	public void setAngularVelocity(float angularVelocity) {
 		this.angularVelocity = angularVelocity;
 	}
 
