@@ -1,6 +1,5 @@
 package com.pullstop.game;
 
-import com.badlogic.gdx.maps.Map;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.MapObjects;
 import com.badlogic.gdx.maps.objects.CircleMapObject;
@@ -25,11 +24,7 @@ import com.badlogic.gdx.utils.Array;
 public class MapBodyBuilder {
 	final static float PIXELS_TO_METERS = 100f;
 
-    // The pixels per tile. If your tiles are 16x16, this is set to 16f
-    private static float ppt = 0;
-
     public static Array<Body> buildShapes(TiledMap map, float pixels, World world) {
-        ppt = pixels;
         System.out.println(map);
         MapObjects objects = map.getLayers().get("Obstacles").getObjects();
 

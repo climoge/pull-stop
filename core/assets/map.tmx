@@ -5,23 +5,17 @@
  </tileset>
  <layer name="plateau" width="32" height="32">
   <data encoding="base64" compression="zlib">
-   eJzty6ENADAIAEF2wXb/+WoRmBJc75KXHwFAlU3sO03T7+UHAPjVBb/2AsA=
+   eJzty7sJACAQREFLETM//denwQWmgiDCDDzYZFMCAAB4K69KlCPua1Hf9smvRmOLf0zd3wKi
   </data>
  </layer>
  <layer name="decors" width="32" height="32">
   <data encoding="base64" compression="zlib">
-   eJzzY2Bg8BvFo3gUj+JBiAUGyF5lIFYEYiUoW3kQhAUtMB+Z4QxSzw/Vj0zzk2iOFhTrIGFi9MHUaiKxYWYNdJiO4lE8ikfxKB7Fo3gUD2YMAAzyMx0=
+   eJzt0NEJACAUAkAnfPuP0wIR0Y8QJ9y/OkkGAACgaJd2px+9/nxKexP3FjqxMuI=
   </data>
  </layer>
  <objectgroup name="Obstacles">
-  <object x="896" y="896">
-   <polyline points="0,0 0,-64 448,-64 448,0 0,0"/>
-  </object>
-  <object x="704" y="704">
-   <polyline points="0,0 -320,0 -320,-64 0,-64 0,0"/>
-  </object>
-  <object x="0" y="832">
-   <polyline points="0,0 320,0 320,64 0,64 0,0"/>
-  </object>
+  <object x="0" y="1792" width="320" height="64"/>
+  <object x="384" y="1600" width="320" height="64"/>
+  <object x="896" y="1792" width="448" height="64"/>
  </objectgroup>
 </map>
