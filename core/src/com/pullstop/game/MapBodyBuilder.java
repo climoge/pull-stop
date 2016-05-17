@@ -28,20 +28,20 @@ public class MapBodyBuilder {
 
     public static Array<Body> buildShapes(TiledMap map, float pixels, World world, Stage stage) {
         System.out.println(map);
+        
+        TextureMapObject mapObject;
+        
         MapObjects objects = map.getLayers().get("Obstacles").getObjects();
 
         Array<Body> bodies = new Array<Body>();
         
-      //test ajout character depuis tilemap
         MapObjects characters = map.getLayers().get("Character").getObjects();
         
         for(MapObject object : characters) {
-        	System.out.println("character");
         	if (object instanceof TextureMapObject) {
-        		System.out.println("texture");
-        		Character character = new Character(((TextureMapObject) object).getX() / PIXELS_TO_METERS, ((TextureMapObject) object).getY() / PIXELS_TO_METERS, ((TextureMapObject) object).getTextureRegion().getTexture(), world);
+        		mapObject = (TextureMapObject) object;
+        		Character character = new Character(mapObject.getX() / PIXELS_TO_METERS, mapObject.getY() / PIXELS_TO_METERS, mapObject.getTextureRegion().getTexture(), world);
         		character.setTouchable(Touchable.enabled);
-        		//System.out.println("Object X" + ((TextureMapObject) object).getX());
         		bodies.add(character.body);
         		stage.addActor(character);
             }
@@ -50,17 +50,16 @@ public class MapBodyBuilder {
         MapObjects balls = map.getLayers().get("Balls").getObjects();
         
         for(MapObject object : balls) {
-        	System.out.println("balls");
         	if (object instanceof TextureMapObject) {
-        		System.out.println("texture");
-        		Projectile projectile = new Projectile(((TextureMapObject) object).getX() / PIXELS_TO_METERS, ((TextureMapObject) object).getY() / PIXELS_TO_METERS, ((TextureMapObject) object).getTextureRegion().getTexture(), world);
+        		mapObject = (TextureMapObject) object;
+        		Projectile projectile = new Projectile(mapObject.getX() / PIXELS_TO_METERS, mapObject.getY() / PIXELS_TO_METERS, mapObject.getTextureRegion().getTexture(), world, 0.1f, 0.2f, 0.5f, false);
         		projectile.setTouchable(Touchable.enabled);
-        		//System.out.println("Object X" + ((TextureMapObject) object).getX());
         		bodies.add(projectile.body);
         		stage.addActor(projectile);
             }
         }
-        //Fin test
+        
+        mapObject = null;
 
         for(MapObject object : objects) {
         	System.out.println("obstacle");

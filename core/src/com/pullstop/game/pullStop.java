@@ -19,6 +19,8 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
+import com.badlogic.gdx.physics.box2d.Contact;
+import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -68,7 +70,7 @@ public class pullStop extends ApplicationAdapter implements InputProcessor {
 		tiledMap = new TmxMapLoader().load("map.tmx");
 		tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
 
-		/* Array<Body> bodies = */MapBodyBuilder.buildShapes(tiledMap, 64f, world, stage);
+		MapBodyBuilder.buildShapes(tiledMap, 64f, world, stage);
 
 		Gdx.input.setInputProcessor(this);
 
@@ -79,21 +81,23 @@ public class pullStop extends ApplicationAdapter implements InputProcessor {
 		camera.position.set(new Vector3(characterOnFocus.getX(), characterOnFocus.getY(), 0f));
 
 		stage.getViewport().setCamera(camera);
-
-		// sb = new SpriteBatch();
-		// sprite = new Sprite(texture);
 	}
 
 	@Override
 	public void render() {
-		// Test de vitesse constante
 		for (Actor actor : stage.getActors()) {
-			if (actor.getClass() == Character.class) {
-				((Character) actor).move();
+			((PhysicBody) actor).move();
+		}
+
+		int numContacts = world.getContactCount();
+		if (numContacts > 0) {
+			Gdx.app.log("contact", "start of contact list");
+			for (Contact contact : world.getContactList()) {
+				Fixture fixtureA = contact.getFixtureA();
+				Fixture fixtureB = contact.getFixtureB();
+				Gdx.app.log("contact", "between " + fixtureA.toString() + " and " + fixtureB.toString());
 			}
-			if (actor.getClass() == Projectile.class) {
-				((Projectile) actor).move();
-			}
+			Gdx.app.log("contact", "end of contact list");
 		}
 
 		camera.position.set(new Vector3(characterOnFocus.getX(), characterOnFocus.getY(), 0f));
@@ -101,7 +105,7 @@ public class pullStop extends ApplicationAdapter implements InputProcessor {
 
 		world.step(1f / 60f, 6, 2);
 
-		Gdx.gl.glClearColor(1, 0, 0, 1);
+		Gdx.gl.glClearColor(0, 0.5f, 0.9f, 1);
 		Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		camera.update();
