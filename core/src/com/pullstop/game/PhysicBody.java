@@ -62,6 +62,11 @@ public class PhysicBody extends Actor{
 	}
 
 	@Override
+	public String toString() {
+		return "PhysicBody [texture=" + texture + ", body=" + body + "]";
+	}
+
+	@Override
 	public void draw(Batch batch, float alpha) {
 		batch.draw(texture, this.getX(), getY(), this.getOriginX(), this.getOriginY(), this.getWidth(),
 				this.getHeight(), this.getScaleX(), this.getScaleY(), this.getRotation(), 0, 0, texture.getWidth(),

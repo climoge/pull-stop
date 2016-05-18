@@ -21,6 +21,7 @@
  </layer>
  <objectgroup name="Character">
   <object gid="115" x="126" y="1638"/>
+  <object gid="115" x="315" y="1638"/>
  </objectgroup>
  <objectgroup name="Balls">
   <object gid="116" x="756" y="1260"/>
@@ -30,6 +31,14 @@
   <object gid="116" x="1827" y="1575"/>
   <object gid="116" x="1827" y="945"/>
   <object gid="116" x="189" y="1260"/>
+  <object gid="116" x="882" y="819"/>
+  <object gid="116" x="1008" y="882"/>
+  <object gid="116" x="1260" y="630"/>
+  <object gid="116" x="1512" y="630"/>
+  <object gid="116" x="1701" y="567"/>
+  <object gid="116" x="1071" y="441"/>
+  <object gid="116" x="693" y="504"/>
+  <object gid="116" x="378" y="441"/>
  </objectgroup>
  <objectgroup name="Obstacles">
   <object x="0" y="1638" width="504" height="378"/>

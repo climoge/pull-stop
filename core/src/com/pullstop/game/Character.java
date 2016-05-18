@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 
-public class Character extends PhysicBody{
+public class Character extends PhysicBody {
 	public enum MoveState {
 		LEFT,
 		RIGHT,
@@ -21,6 +21,11 @@ public class Character extends PhysicBody{
 		super(posX, posY, texture, world);
 	}
 	
+	@Override
+	public String toString() {
+		return "Character [moveState=" + moveState + ", texture=" + texture + ", body=" + body + "]";
+	}
+
 	public void move(){
 		Vector2 vel = body.getLinearVelocity();
 	    float desiredVel = 0;

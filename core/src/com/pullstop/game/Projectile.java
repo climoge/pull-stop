@@ -45,6 +45,12 @@ public class Projectile extends PhysicBody {
 		this.setRotation((float) Math.toDegrees(body.getAngle()));
 	}
 
+	@Override
+	public String toString() {
+		return "Projectile [velocity=" + velocity + ", angularVelocity=" + angularVelocity + ", texture=" + texture
+				+ ", body=" + body + "]";
+	}
+
 	public void setVelocity(Vector2 velocity) {
 		this.velocity = velocity;
 	}

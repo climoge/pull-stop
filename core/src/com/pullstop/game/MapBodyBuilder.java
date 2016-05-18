@@ -52,7 +52,7 @@ public class MapBodyBuilder {
         for(MapObject object : balls) {
         	if (object instanceof TextureMapObject) {
         		mapObject = (TextureMapObject) object;
-        		Projectile projectile = new Projectile(mapObject.getX() / PIXELS_TO_METERS, mapObject.getY() / PIXELS_TO_METERS, mapObject.getTextureRegion().getTexture(), world, 0.1f, 0.2f, 0.5f, false);
+        		Projectile projectile = new Projectile(mapObject.getX() / PIXELS_TO_METERS, mapObject.getY() / PIXELS_TO_METERS, mapObject.getTextureRegion().getTexture(), world, 0.1f, 0.5f, 0.5f, false);
         		projectile.setTouchable(Touchable.enabled);
         		bodies.add(projectile.body);
         		stage.addActor(projectile);
