@@ -40,7 +40,8 @@ public class MapBodyBuilder {
         for(MapObject object : characters) {
         	if (object instanceof TextureMapObject) {
         		mapObject = (TextureMapObject) object;
-        		Character character = new Character(mapObject.getX() / PIXELS_TO_METERS, mapObject.getY() / PIXELS_TO_METERS, mapObject.getTextureRegion().getTexture(), world);
+        		System.out.println(mapObject.getName());
+        		Character character = new Character(mapObject.getName(), mapObject.getX() / PIXELS_TO_METERS, mapObject.getY() / PIXELS_TO_METERS, mapObject.getTextureRegion().getTexture(), world);
         		character.setTouchable(Touchable.enabled);
         		bodies.add(character.body);
         		stage.addActor(character);
@@ -52,7 +53,7 @@ public class MapBodyBuilder {
         for(MapObject object : balls) {
         	if (object instanceof TextureMapObject) {
         		mapObject = (TextureMapObject) object;
-        		Projectile projectile = new Projectile(mapObject.getX() / PIXELS_TO_METERS, mapObject.getY() / PIXELS_TO_METERS, mapObject.getTextureRegion().getTexture(), world, 0.1f, 0.5f, 0.5f, false);
+        		Projectile projectile = new Projectile(mapObject.getX() / PIXELS_TO_METERS, mapObject.getY() / PIXELS_TO_METERS, mapObject.getTextureRegion().getTexture(), world, 0.1f, 0.5f, 0.5f, mapObject.getProperties().containsKey("fixedRotation"));
         		projectile.setTouchable(Touchable.enabled);
         		bodies.add(projectile.body);
         		stage.addActor(projectile);

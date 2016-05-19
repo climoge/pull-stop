@@ -1,9 +1,14 @@
 package com.pullstop.game;
 
+import java.util.Objects;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.controllers.Controller;
+import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
@@ -17,7 +22,6 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.pullstop.game.Character.MoveState;
 
 public class Level implements InputProcessor {
 	final float PIXELS_TO_METERS = 100f;
@@ -39,6 +43,15 @@ public class Level implements InputProcessor {
 	private Matrix4 debugMatrix;
 
 	private boolean debugMode;
+
+	private Character pullCharacter;
+	private Character stopCharacter;
+
+	boolean hasControllers = true;
+	String message = "Please install a controller";
+	BitmapFont font;
+
+	private Controller controller;
 
 	public Level() {
 		this(false);
@@ -71,7 +84,25 @@ public class Level implements InputProcessor {
 
 		MapBodyBuilder.buildShapes(tiledMap, 64f, world, stage);
 
+		for (Actor actor : stage.getActors()) {
+			if (actor.getClass() == Character.class) {
+				if (((Character) actor).getName().compareTo("pull") == 0) {
+					pullCharacter = (Character) actor;
+				} else if (((Character) actor).getName().compareTo("stop") == 0) {
+					stopCharacter = (Character) actor;
+				} else {
+					Objects.requireNonNull(pullCharacter, "You have to create a character named \"pull\"");
+					Objects.requireNonNull(stopCharacter, "You have to create a character named \"stop\"");
+				}
+			}
+		}
+
 		Gdx.input.setInputProcessor(this);
+
+		if (Controllers.getControllers().size == 0) {
+			hasControllers = false;
+		} else
+			controller = Controllers.getControllers().first();
 
 		camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
@@ -85,15 +116,8 @@ public class Level implements InputProcessor {
 	@Override
 	public boolean keyDown(int keycode) {
 		if (keycode == Input.Keys.LEFT) {
-			((Character) stage.getActors().first()).body.setAwake(true);
-			((Character) stage.getActors().first()).setMoveState(MoveState.LEFT);
-			// body.setLinearVelocity(-character1.getSpeed(),body.getLinearVelocity().y);
-			// body.applyForceToCenter(10f,0f,true);
 		}
 		if (keycode == Input.Keys.RIGHT) {
-			((Character) stage.getActors().first()).body.setAwake(true);
-			((Character) stage.getActors().first()).setMoveState(MoveState.RIGHT);
-			// body.setLinearVelocity(character1.getSpeed(),body.getLinearVelocity().y);
 		}
 		if (keycode == Input.Keys.UP) {
 			if (((Character) stage.getActors().first()).body.getLinearVelocity().y == 0) {
@@ -106,41 +130,15 @@ public class Level implements InputProcessor {
 		}
 
 		if (keycode == Input.Keys.D) {
-			for (Actor actor : stage.getActors()) {
-				if (actor.getClass() == Projectile.class) {
-					if (((Projectile) actor).body.getType() == BodyType.StaticBody) {
-						((Projectile) actor).body.setType(BodyType.DynamicBody);
-						((Projectile) actor).body.setLinearVelocity(((Projectile) actor).getVelocity());
-						((Projectile) actor).body.setAngularVelocity(((Projectile) actor).getAngularVelocity());
-					}
-				}
-			}
+			freezeProjectiles();
 		}
 
 		if (keycode == Input.Keys.S) {
-			for (Actor actor : stage.getActors()) {
-				if (actor.getClass() == Projectile.class) {
-					if (((Projectile) actor).body.getType() == BodyType.DynamicBody) {
-						((Projectile) actor).setVelocity(((Projectile) actor).body.getLinearVelocity());
-						((Projectile) actor).setAngularVelocity(((Projectile) actor).body.getAngularVelocity());
-						((Projectile) actor).body.setType(BodyType.StaticBody);
-					}
-				}
-			}
-			// character2.body.setType(BodyType.StaticBody);
+			unFreezeProjectiles();
 		}
 
 		if (keycode == Input.Keys.SPACE) {
-			for (Actor actor : stage.getActors()) {
-				if (actor.getClass() == Projectile.class) {
-					if (((Projectile) actor).body.getType() == BodyType.DynamicBody) {
-						float directionVector = ((Character) stage.getActors().first()).body.getPosition()
-								.sub(((Projectile) actor).body.getPosition()).angle();
-						((Projectile) actor).body.applyForceToCenter(new Vector2(10f, 0).rotate(directionVector), true);
-						;
-					}
-				}
-			}
+			pullProjectilesTo(pullCharacter.getPosition());
 		}
 
 		if (keycode == Input.Keys.ESCAPE) {
@@ -155,13 +153,9 @@ public class Level implements InputProcessor {
 
 	@Override
 	public boolean keyUp(int keycode) {
-		if (keycode == Input.Keys.LEFT && ((Character) stage.getActors().first()).getMoveState() == MoveState.LEFT) {
-			((Character) stage.getActors().first()).setMoveState(MoveState.STOP);
-			// body.setLinearVelocity(0f,body.getLinearVelocity().y);
+		if (keycode == Input.Keys.LEFT) {
 		}
-		if (keycode == Input.Keys.RIGHT && ((Character) stage.getActors().first()).getMoveState() == MoveState.RIGHT) {
-			((Character) stage.getActors().first()).setMoveState(MoveState.STOP);
-			// body.setLinearVelocity(0f,body.getLinearVelocity().y);
+		if (keycode == Input.Keys.RIGHT) {
 		}
 		return true;
 	}
@@ -196,29 +190,15 @@ public class Level implements InputProcessor {
 		return false;
 	}
 
-	public Vector2 getGravity() {
-		return gravity;
-	}
-
-	public void setGravity(Vector2 gravity) {
-		this.gravity = gravity;
-	}
-
-	public World getWorld() {
-		return world;
-	}
-
-	public Stage getStage() {
-		return stage;
-	}
-
 	public void update() {
 
 		for (Actor actor : stage.getActors()) {
 			((PhysicBody) actor).move();
 		}
-		camera.position.interpolate(new Vector3(characterOnFocus.getX(), characterOnFocus.getY(), 0f), 0.2f, Interpolation.linear);
-		//camera.position.set(new Vector3(characterOnFocus.getX(), characterOnFocus.getY(), 0f));
+		camera.position.interpolate(new Vector3(characterOnFocus.getX(), characterOnFocus.getY(), 0f), 0.2f,
+				Interpolation.linear);
+		// camera.position.set(new Vector3(characterOnFocus.getX(),
+		// characterOnFocus.getY(), 0f));
 		camera.update();
 
 		tiledMapRenderer.setView(camera);
@@ -233,5 +213,96 @@ public class Level implements InputProcessor {
 			debugRenderer.render(world, debugMatrix);
 		}
 
+		/* pullCharacter inputs */
+
+		if (controller.getAxis(XBox360Pad.AXIS_LEFT_X) > 0.3f || controller.getAxis(XBox360Pad.AXIS_LEFT_X) < -0.3f) {
+			pullCharacter.moveAt(controller.getAxis(XBox360Pad.AXIS_LEFT_X) * 5);
+		} else {
+			pullCharacter.moveAt(0);
+		}
+
+		if (controller.getAxis(XBox360Pad.AXIS_LEFT_TRIGGER) == 1.f) {
+			pullProjectilesTo(pullCharacter.getPosition());
+		}
+
+		if (controller.getButton(XBox360Pad.BUTTON_LB)) {
+			pullCharacter.jump();
+		}
+
+		/* stopCharacter inputs */
+
+		if (controller.getAxis(XBox360Pad.AXIS_RIGHT_X) > 0.3f || controller.getAxis(XBox360Pad.AXIS_RIGHT_X) < -0.3f) {
+			stopCharacter.moveAt(controller.getAxis(XBox360Pad.AXIS_RIGHT_X) * 5);
+		} else {
+			stopCharacter.moveAt(0);
+		}
+
+		if (controller.getAxis(XBox360Pad.AXIS_RIGHT_TRIGGER) > 0.f) {
+			freezeProjectiles();
+		} else {
+			unFreezeProjectiles();
+		}
+
+		if (controller.getButton(XBox360Pad.BUTTON_RB)) {
+			stopCharacter.jump();
+		}
+	}
+
+	public void freezePhysicBodies(PhysicBody physicBodies[]) {
+		for (PhysicBody physicBody : physicBodies) {
+			physicBody.freeze();
+		}
+	}
+
+	public void unFreezePhysicBodies(PhysicBody physicBodies[]) {
+		for (PhysicBody physicBody : physicBodies) {
+			physicBody.unFreeze();
+		}
+	}
+
+	public void freezeProjectiles() {
+		for (Actor actor : stage.getActors()) {
+			if (actor instanceof Projectile) {
+				((PhysicBody) actor).freeze();
+			}
+		}
+	}
+
+	public void unFreezeProjectiles() {
+		for (Actor actor : stage.getActors()) {
+			if (actor instanceof Projectile) {
+				((PhysicBody) actor).unFreeze();
+			}
+		}
+	}
+	
+	public void pullProjectilesTo(final Vector2 p){
+		for (Actor actor : stage.getActors()) {
+			if (actor instanceof Projectile) {
+				if (((Projectile) actor).body.getType() == BodyType.DynamicBody) {
+					((Projectile) actor).pullTo(p, 0.5f);
+				}
+			}
+		}
+	}
+
+	public OrthographicCamera getCamera() {
+		return camera;
+	}
+
+	public Vector2 getGravity() {
+		return gravity;
+	}
+
+	public void setGravity(Vector2 gravity) {
+		this.gravity = gravity;
+	}
+
+	public World getWorld() {
+		return world;
+	}
+
+	public Stage getStage() {
+		return stage;
 	}
 }

@@ -1,16 +1,12 @@
 package com.pullstop.game;
 
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
 
 public class Projectile extends PhysicBody {
-
-	private Vector2 velocity;
-	private float angularVelocity;
 
 	public Projectile(float posX, float posY, Texture texture, World world, float density, float restitution, float friction, boolean rotation) {
 		super(posX, posY, texture, world, density, restitution, friction, rotation);
@@ -47,24 +43,7 @@ public class Projectile extends PhysicBody {
 
 	@Override
 	public String toString() {
-		return "Projectile [velocity=" + velocity + ", angularVelocity=" + angularVelocity + ", texture=" + texture
-				+ ", body=" + body + "]";
-	}
-
-	public void setVelocity(Vector2 velocity) {
-		this.velocity = velocity;
-	}
-
-	public Vector2 getVelocity() {
-		return velocity;
-	}
-
-	public float getAngularVelocity() {
-		return angularVelocity;
-	}
-
-	public void setAngularVelocity(float angularVelocity) {
-		this.angularVelocity = angularVelocity;
+		return "Projectile [texture=" + texture + ", body=" + body + "]";
 	}
 
 	/*

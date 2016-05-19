@@ -47,5 +47,10 @@ public class pullStop extends ApplicationAdapter {
 		level.getWorld().dispose();
 	}
 
-	
+	 @Override
+	 public void resize(int width, int height) {
+		level.getCamera().setToOrtho(false, width, height);
+
+		level.getCamera().setToOrtho(false, width, height);
+	 }
 }
