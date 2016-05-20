@@ -4,33 +4,49 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.PolygonShape;
+import com.badlogic.gdx.physics.box2d.Shape;
 import com.badlogic.gdx.physics.box2d.World;
 
 public class Projectile extends PhysicBody {
+	enum ProjectileShape{
+		SQUARE,
+		CIRCLE
+	}
 
-	public Projectile(float posX, float posY, Texture texture, World world, float density, float restitution, float friction, boolean rotation) {
-		super(posX, posY, texture, world, density, restitution, friction, rotation);
+	public Projectile(float posX, float posY, Texture texture, World world, float density, float restitution, float friction, boolean fixedRotation) {
+		super(posX, posY, texture, world, density, restitution, friction, fixedRotation);
 	}
 	
 	@Override
-	protected void createBody(float posX, float posY, World world, float density, float restitution, float friction, boolean rotation) {
+	protected void createBody(float posX, float posY, World world, float density, float restitution, float friction, boolean fixedRotation) {
 		BodyDef bodyDef = new BodyDef();
 		bodyDef.type = BodyDef.BodyType.DynamicBody;
 		bodyDef.position.set(posX, posY);
 
 		body = world.createBody(bodyDef);
-
-		CircleShape shape = new CircleShape();
-		shape.setRadius((texture.getWidth() / 2) / PIXELS_TO_METERS);
+		
+		Shape shape;
+		
+		if(!fixedRotation){
+			shape = new CircleShape();
+			shape.setRadius((texture.getWidth() / 2) / PIXELS_TO_METERS);
+		}
+		else{
+			shape = new PolygonShape();
+			((PolygonShape) shape).setAsBox(texture.getWidth() / 2 / PIXELS_TO_METERS, texture.getHeight() / 2 / PIXELS_TO_METERS);
+		}
 		
 		FixtureDef fixtureDef = new FixtureDef();
 		fixtureDef.shape = shape;
 		fixtureDef.density = density;
 		fixtureDef.restitution = restitution;
 		fixtureDef.friction = friction;
+		fixtureDef.filter.categoryBits = PROJECTILE;
+		fixtureDef.filter.maskBits = WORLD | PROJECTILE;
 
 		body.createFixture(fixtureDef);
-		body.setFixedRotation(rotation);
+		body.setFixedRotation(fixedRotation);
 
 		shape.dispose();
 	}

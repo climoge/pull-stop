@@ -19,22 +19,11 @@ public class pullStop extends ApplicationAdapter {
 
 	@Override
 	public void create() {
-		level = new Level(true);
+		level = new Level(false);
 	}
 
 	@Override
 	public void render() {
-		/*int numContacts = level.getWorld().getContactCount();
-		if (numContacts > 0) {
-			Gdx.app.log("contact", "start of contact list");
-			for (Contact contact : level.getWorld().getContactList()) {
-				Fixture fixtureA = contact.getFixtureA();
-				Fixture fixtureB = contact.getFixtureB();
-				Gdx.app.log("contact", "between " + fixtureA.toString() + " and " + fixtureB.toString());
-			}
-			Gdx.app.log("contact", "end of contact list");
-		}*/
-
 		Gdx.gl.glClearColor(0, 0.5f, 0.9f, 1);
 		Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);

@@ -1,43 +1,69 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="32" height="32" tilewidth="63" tileheight="63">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="100" height="32" tilewidth="63" tileheight="63">
  <tileset firstgid="1" name="gfdfg" tilewidth="63" tileheight="63" spacing="1" margin="2">
   <image source="Image-Tileset.png" width="1218" height="386"/>
  </tileset>
- <tileset firstgid="115" name="Pika" tilewidth="64" tileheight="64">
-  <image source="pika.png" width="64" height="64"/>
- </tileset>
- <tileset firstgid="116" name="ball" tilewidth="64" tileheight="64">
+ <tileset firstgid="115" name="ball" tilewidth="64" tileheight="64">
   <image source="ball.png" width="64" height="64"/>
  </tileset>
- <layer name="Calque de Tile 1" width="32" height="32" visible="0">
+ <tileset firstgid="116" name="crate" tilewidth="64" tileheight="64">
+  <image source="wooden_crate.png" width="64" height="64"/>
+ </tileset>
+ <tileset firstgid="117" name="Pull" tilewidth="37" tileheight="64">
+  <image source="pull.png" width="37" height="64"/>
+ </tileset>
+ <tileset firstgid="118" name="Stop" tilewidth="37" tileheight="64">
+  <image source="stop.png" width="37" height="64"/>
+ </tileset>
+ <tileset firstgid="119" name="Cannon" tilewidth="64" tileheight="90">
+  <image source="cannon.png" width="64" height="90"/>
+ </tileset>
+ <layer name="Calque de Tile 1" width="100" height="32" visible="0">
   <data encoding="base64" compression="zlib">
-   eJztwwEJAAAMBKFL+P3jrMdQcNVUVVXV1w8SbTgQ
+   eJztw0ENAAAMA6FTWP9yZmMPSFg1VVVVVVVVVVVVVVVV3z5k/M8u
   </data>
  </layer>
- <layer name="Decor" width="32" height="32">
+ <layer name="Decor" width="100" height="32">
   <data encoding="base64" compression="zlib">
-   eJztjjEKwCAMRV10sKewnbTe/3y1kICEdJBCu7wHj4RI8g0BAAAAAAA8yvCQukstv/4I3tKH57BJ1V5dpU67fbLJWzWzJEbTq6vM+yn4958yyf8+fxOz6bOZrRidXe/WPbsA400HMQ==
+   eJztWU1vgzAMzYFy6M7Q9jZtt+3//7+1EtZePfvZsECRyJOs0gSC7Rd/NC2llCvITcljbATBey+lYQ2gvx8+HuD6IcjPMI0JJw31IRyIvyUmhvLrf+HlCmO3Vyh7AIifhQe8Howx+Wz5ah3IfpfYkFiReBHfY75q8bEehAusFRgbUi8u5W9db6gPrONYQzBGZAx5GV6h7AGga4LUk1t5zmO6zo+vUPYAkBykecCagXUd60hDfYj/5RP5wTkck7rfUB/IAdZ2rCdYQ0aYa6gPrBO6tx3L35yFfXFDfWDPhHUbazf2XQPMN9SHPr/CfIRnVQPMy/ie8HmXj+nzfZIaEFu36vHxN7nueXX/q89WjgDdW64NfW6F9RvjwartRwBysRUf6G/8jj2XPj/J8OFxi70B9gx7hOi31ZkdcqDPFtFXI8xn+yvsAXSPps/K9vr7Unwjsjbw/yY8O8Qahj7FehNB9866P8P198qHPuve4n2YI3Wusn6LZGPXO8fHvIf7YY/AnLEFH/jfud63eNaIOSzb71p1Q/fO2EfsEbrmrYmvSb6da/mu5y1h82w9fKe1FtNJJLIx0tnygX43s4PZ79mo13tId5fTJB3IaYboZzpj3Fvbes5aU6+h12PwdNRrMF0im5mOlv3WO7N+jXwe6eHpy+z1+PR0i/hg+4TZwe7x1mV7OrvXGZ9sX2V4Zrww3qP4wrGID/aOSJ85z83Z7x7XS2LF0zWjG8tFbB8yvSM+PJuiWJ0zz/az5YulXLKcM2dPMfuidbx75Zohk0ei/cX2yRJfeTr1k8h9vbNedl/3xtq98b0vtp2eHcyeTHywZxnX2XstLiKurfss/2Xjylrzv3ww8WzsAj6yvmD5jHHD4iqKMSs+uvLsL2a3l0OWxgfT3+PAsinig+3vzHs9PbLxxGLK82HER6TTkvhYkjcsP0R8WHaw8cyezvrY85n1nrdJzur6rMbmyMl41lrrTPRkXMzNVyzOrfVYDLG8EeVFltdk7AeAQUXz
   </data>
  </layer>
  <objectgroup name="Character">
-  <object name="pull" gid="115" x="126" y="1638"/>
-  <object name="stop" gid="115" x="315" y="1638"/>
+  <object name="pull" gid="117" x="1197" y="1323"/>
+  <object name="stop" gid="118" x="1323" y="1323"/>
  </objectgroup>
- <objectgroup name="Balls">
-  <object gid="116" x="756" y="1260">
+ <objectgroup name="Projectiles">
+  <object gid="115" x="1638" y="1008"/>
+  <object gid="115" x="1512" y="1008"/>
+  <object gid="116" x="1764" y="1008">
    <properties>
     <property name="fixedRotation" value="1"/>
    </properties>
   </object>
-  <object gid="116" x="882" y="1386"/>
+  <object gid="116" x="2205" y="1008">
+   <properties>
+    <property name="fixedRotation" value=""/>
+   </properties>
+  </object>
+  <object gid="115" x="1953" y="945"/>
+  <object gid="115" x="1890" y="1008"/>
+  <object gid="115" x="2142" y="945"/>
+ </objectgroup>
+ <objectgroup name="Cannon">
+  <object gid="119" x="3213" y="945"/>
+  <object gid="119" x="3276" y="945"/>
+  <object gid="119" x="3339" y="945"/>
+  <object gid="119" x="3402" y="945"/>
+  <object gid="119" x="3465" y="945"/>
  </objectgroup>
  <objectgroup name="Obstacles">
-  <object x="0" y="1638" width="504" height="378"/>
-  <object x="504" y="1953" width="756" height="63"/>
-  <object x="1260" y="1638" width="756" height="378"/>
-  <object x="0" y="1638">
-   <polyline points="0,0 0,-1638 2016,-1638 2016,0"/>
+  <object x="441" y="0" width="567" height="1323"/>
+  <object x="63" y="0">
+   <polyline points="0,0 6237,0"/>
   </object>
-  <object x="693" y="1386" width="378" height="63"/>
+  <object x="0" y="1323" width="3150" height="693"/>
+  <object x="1512" y="1008" width="756" height="315"/>
+  <object x="4599" y="819" width="252" height="504"/>
+  <object x="3591" y="1323" width="2709" height="693"/>
  </objectgroup>
 </map>

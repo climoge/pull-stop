@@ -48,22 +48,45 @@ public class MapBodyBuilder {
             }
         }
         
-        MapObjects balls = map.getLayers().get("Balls").getObjects();
+        MapObjects projectiles = map.getLayers().get("Projectiles").getObjects();
         
-        for(MapObject object : balls) {
+        for(MapObject object : projectiles) {
         	if (object instanceof TextureMapObject) {
+            	System.out.println("projectile generated");
         		mapObject = (TextureMapObject) object;
-        		Projectile projectile = new Projectile(mapObject.getX() / PIXELS_TO_METERS, mapObject.getY() / PIXELS_TO_METERS, mapObject.getTextureRegion().getTexture(), world, 0.1f, 0.5f, 0.5f, mapObject.getProperties().containsKey("fixedRotation"));
+        		Projectile projectile;
+        		if(mapObject.getProperties().containsKey("fixedRotation")){
+        			projectile = new Projectile(mapObject.getX() / PIXELS_TO_METERS, mapObject.getY() / PIXELS_TO_METERS, mapObject.getTextureRegion().getTexture(), world, 0.1f, 0.5f, 0.5f, true);
+        		}
+        		else{
+        			projectile = new Projectile(mapObject.getX() / PIXELS_TO_METERS, mapObject.getY() / PIXELS_TO_METERS, mapObject.getTextureRegion().getTexture(), world, 0.1f, 0.5f, 0.5f, false);
+        		}
+        		
         		projectile.setTouchable(Touchable.enabled);
         		bodies.add(projectile.body);
         		stage.addActor(projectile);
             }
         }
         
+        MapObjects ennemies = map.getLayers().get("Cannon").getObjects();
+        
+        for(MapObject object : ennemies) {
+        	if (object instanceof TextureMapObject) {
+            	System.out.println("ennemy generated");
+        		mapObject = (TextureMapObject) object;
+        		if(mapObject.getTextureRegion().isFlipX())
+        			mapObject.getTextureRegion().flip(true, false);
+        		Enemy enemy = new Enemy(mapObject.getX() / PIXELS_TO_METERS, mapObject.getY() / PIXELS_TO_METERS, mapObject.getTextureRegion().getTexture(), world);
+        		enemy.setTouchable(Touchable.enabled);
+        		bodies.add(enemy.body);
+        		stage.addActor(enemy);
+            }
+        }
+        
         mapObject = null;
 
         for(MapObject object : objects) {
-        	System.out.println("obstacle");
+        	System.out.println("obstacle generated");
             if (object instanceof TextureMapObject) {
                 continue;
             }
@@ -112,8 +135,6 @@ public class MapBodyBuilder {
     }
 
     private static CircleShape getCircle(CircleMapObject circleObject) {
-    	//bodyDef.position.set((character1.getX() - character1.getWidth()/2) / PIXELS_TO_METERS, 
-		//		(character1.getY() - character1.getHeight()/2) / PIXELS_TO_METERS);
         Circle circle = circleObject.getCircle();
         CircleShape circleShape = new CircleShape();
         circleShape.setRadius(circle.radius / PIXELS_TO_METERS);
