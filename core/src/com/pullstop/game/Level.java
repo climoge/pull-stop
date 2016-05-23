@@ -7,7 +7,6 @@ import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
@@ -26,8 +25,8 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 public class Level{
 	final float PIXELS_TO_METERS = 100f;
 	
-	public static long startTime;
-	public static long elapsedTime;
+	private static long startTime;
+	private static long elapsedTime;
 
 	private TiledMap tiledMap;
 
@@ -47,10 +46,6 @@ public class Level{
 
 	private Character pullCharacter;
 	private Character stopCharacter;
-
-	boolean hasControllers = true;
-	String message = "Please install a controller";
-	BitmapFont font;
 	
 	private boolean timeStopped;
 
@@ -99,12 +94,14 @@ public class Level{
 				}
 			}
 		}
-
-		if (Controllers.getControllers().size == 0) {
-			hasControllers = false;
-		} else
-			controller = Controllers.getControllers().first();
-
+		
+		try{
+		controller = Controllers.getControllers().first();
+		}
+		catch(Exception e){
+			System.out.println("Please, connect a gamepad controller.");
+			System.exit(0);
+		}
 		camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
 		camera.position.set(new Vector3((pullCharacter.getX() + stopCharacter.getX())*0.5f, (pullCharacter.getY() + stopCharacter.getY())*0.5f, 0f));
